@@ -15,8 +15,15 @@ app.get("/api/competitions", async (req, res) => {
                 "X-Auth-Token": API_KEY,
             },
         })
+
+        if (!resp.ok) {
+            return res.status(resp.status).json({
+                error: `API error: ${resp.status}`
+            })
+        }
         const data = await resp.json()
         res.json(data)
+
     } catch (e) {
         res.status(500).json({ error: "server error" })
     }
@@ -29,6 +36,11 @@ app.get("/api/teams", async (req, res) => {
                 "X-Auth-Token": API_KEY,
             },
         })
+        if (!resp.ok) {
+            return res.status(resp.status).json({
+                error: `API error: ${resp.status}`
+            })
+        }
         const data = await resp.json()
         res.json(data)
     } catch (e) {
@@ -37,12 +49,20 @@ app.get("/api/teams", async (req, res) => {
 })
 
 app.get("/api/teams/:id/matches", async (req, res) => {
+    const query = req.url.split("?")[1]
     try {
-        const resp = await fetch(`https://api.football-data.org/v4/teams/${req.params.id}/matches`, {
+        const resp = await fetch(`https://api.football-data.org/v4/teams/${req.params.id}/matches${
+            query ? "?" + query : ""
+        }`, {
             headers: {
                 "X-Auth-Token": API_KEY,
             },
         })
+        if (!resp.ok) {
+            return res.status(resp.status).json({
+                error: `API error: ${resp.status}`
+            })
+        }
         const data = await resp.json()
         res.json(data)
     } catch (e) {
@@ -51,12 +71,20 @@ app.get("/api/teams/:id/matches", async (req, res) => {
 })
 
 app.get("/api/competitions/:id/matches", async (req, res) => {
+    const query = req.url.split("?")[1]
     try {
-        const resp = await fetch(`https://api.football-data.org/v4/competitions/${req.params.id}/matches`, {
+        const resp = await fetch(`https://api.football-data.org/v4/competitions/${req.params.id}/matches${
+            query ? "?" + query : ""
+        }`, {
             headers: {
                 "X-Auth-Token": API_KEY,
             },
         })
+        if (!resp.ok) {
+            return res.status(resp.status).json({
+                error: `API error: ${resp.status}`
+            })
+        }
         const data = await resp.json()
         res.json(data)
     } catch (e) {
